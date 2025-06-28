@@ -1,28 +1,29 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $name = $_POST['name'] ?? '';
     $phone = $_POST['phone'] ?? '';
     $offer_id = $_POST['offer_id'] ?? '';
 
-    $apiKey = 'f16d39f7-4f1d-42be-a146-06b4ea93c5c0';
-    
+    $apikey = getenv('API_KEY');
+    $stream_code = getenv('STREAM_CODE');
+
     $data = [
-        'stream_code' => 'znqrb',
-        'client' => [
-            'name' => $name,
-            'phone' => $phone
+        "stream_code" => $stream_code,
+        "client" => [
+            "name" => $name,
+            "phone" => $phone,
         ],
-        'sub1' => '',
-        'sub2' => '',
-        'sub3' => '',
-        'sub4' => '',
-        'sub5' => '',
+        "sub1" => "",
+        "sub2" => "",
+        "sub3" => "",
+        "sub4" => "",
+        "sub5" => ""
     ];
 
     $ch = curl_init('https://api.terraleads.com/v2/order');
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Content-Type: application/json',
-        'Authorization: Bearer ' . $apiKey
+        'Authorization: Bearer ' . $apikey
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -32,11 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     header('Content-Type: application/json');
     echo json_encode([
-        'status' => $status,
-        'response' => json_decode($response, true)
+        "status" => $status,
+        "response" => json_decode($response, true)
     ]);
 } else {
     http_response_code(405);
-    echo json_encode(['error' => 'Method Not Allowed']);
+    echo json_encode(["error" => "Method Not Allowed"]);
 }
 ?>
