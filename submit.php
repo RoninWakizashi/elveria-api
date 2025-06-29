@@ -11,10 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         "stream_code" => $stream_code,
         "client" => [
             "name" => $name,
-            "phone" => $phone,
+            "phone" => $phone
         ],
-        "offer_id" => $offer_id,
-        "sub1" => "",
+        "sub1" => $offer_id, // <-- Правильно: сюда offer_id
         "sub2" => "",
         "sub3" => "",
         "sub4" => "",
@@ -28,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
     $response = curl_exec($ch);
 
     if ($response === false) {
