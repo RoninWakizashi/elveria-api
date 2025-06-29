@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             "name" => $name,
             "phone" => $phone,
         ],
+        "offer_id" => $offer_id,
         "sub1" => "",
         "sub2" => "",
         "sub3" => "",
@@ -27,7 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
     $response = curl_exec($ch);
+
+    if ($response === false) {
+        echo json_encode([
+            "status" => 0,
+            "error" => curl_error($ch)
+        ]);
+        curl_close($ch);
+        exit;
+    }
+
     $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
